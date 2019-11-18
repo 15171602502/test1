@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ysk.source.dao.FansPurchaseRecordMapper">
+	<resultMap id="BaseResultMap" type="com.ysk.source.entity.FansPurchaseRecord">
+		<id column="RECORD_ID" jdbcType="VARCHAR" property="recordId" />
+		<result column="DOCTOR_ID" jdbcType="VARCHAR" property="doctorId" />
+		<result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+		<result column="DRUG_NAME" jdbcType="VARCHAR" property="drugName" />
+		<result column="PURCHASE_QUANTITY" jdbcType="INTEGER" property="purchaseQuantity" />
+		<result column="TOTAL_MONEY" jdbcType="INTEGER" property="totalMoney" />
+		<result column="COMPENSATION" jdbcType="INTEGER" property="compensation" />
+		<result column="FINISH_TIME" jdbcType="VARCHAR" property="finishTime" />
+		<result column="SETTLEMENT_STATE" jdbcType="INTEGER" property="settlementState" />
+		<result column="BACKUP_DATA" jdbcType="VARCHAR" property="backupData" />
+		<result column="BACKUP_TEXT" jdbcType="VARCHAR" property="backupText" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		RECORD_ID, DOCTOR_ID, USER_ID, DRUG_NAME,PURCHASE_QUANTITY,
+		TOTAL_MONEY, COMPENSATION, FINISH_TIME, SETTLEMENT_STATE
+	</sql>
+
+	<insert id="insert" parameterType="com.ysk.source.entity.FansPurchaseRecord">
+		insert into
+		fans_purchase_record (RECORD_ID DOCTOR_ID, USER_ID, DRUG_NAME,
+		PURCHASE_QUANTITY, TOTAL_MONEY, COMPENSATION, SETTLEMENT_STATE)
+		values
+		(#{recordId}, #{doctorId}, #{userId}, #{drugName},
+		#{purchaseQuantity}, #{totalMoney}, #{compensation},
+		#{settlementState})
+	</insert>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from fans_purchase_record
+		where RECORD_ID =#{recordId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectRecordByPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from fans_purchase_record
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(doctorId)">and DOCTOR_ID = #{doctorId}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(userId)">and USER_ID = #{userId}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(drugName)">and DRUG_NAME = #{drugName}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(purchaseQuantity)">and PURCHASE_QUANTITY = #{purchaseQuantity}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(totalMoney)">and TOTAL_MONEY = #{totalMoney}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(compensation)">and COMPENSATION = #{compensation}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(finishTime)">and FINISH_TIME = #{finishTime}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(settlementState)">and SETTLEMENT_STATE = #{settlementState}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectRecordByDoctorId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from fans_purchase_record where FINISH_TIME &lt;&gt; '' and DOCTOR_ID
+		= #{doctorId} and SETTLEMENT_STATE = #{settlementState}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from fans_purchase_record
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="com.ysk.source.entity.FansPurchaseRecord">
+		update fans_purchase_record
+		<trim prefix="set" suffixOverrides=",">
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(doctorId)">DOCTOR_ID = #{doctorId},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(userId)">USER_ID = #{userId},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(drugName)">DRUG_NAME = #{drugName},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(purchaseQuantity)">PURCHASE_QUANTITY = #{purchaseQuantity},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(totalMoney)">TOTAL_MONEY = #{totalMoney},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(compensation)">COMPENSATION = #{compensation},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(finishTime)">FINISH_TIME = #{finishTime},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(settlementState)">SETTLEMENT_STATE = #{settlementState},
+			</if>
+		</trim>
+		where RECORD_ID = #{recordId}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		fans_purchase_record
+		where RECORD_ID = #{recordId,jdbcType=VARCHAR}
+	</delete>
+
+</mapper>

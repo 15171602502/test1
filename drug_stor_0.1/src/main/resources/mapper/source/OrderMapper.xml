@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ysk.source.dao.OrderMapper">
+	<resultMap id="BaseResultMap" type="com.ysk.source.entity.Order">
+		<id column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+		<result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+		<result column="ORDER_STATE" jdbcType="INTEGER" property="orderState" />
+		<result column="SUBMIT_TIME" jdbcType="VARCHAR" property="submitTime" />
+		<result column="FINISH_TIME" jdbcType="VARCHAR" property="finishTime" />
+		<result column="TOTAL_MONEY" jdbcType="INTEGER" property="totalMoney" />
+		<result column="PRESCRIPTION" jdbcType="VARCHAR" property="prescription" />
+		<result column="USER_DLT" jdbcType="INTEGER" property="userDlt" />
+		<result column="BACKUP_DATA" jdbcType="VARCHAR" property="backupData" />
+		<result column="BACKUP_TEXT" jdbcType="VARCHAR" property="backupText" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ORDER_ID, USER_ID, ORDER_STATE, SUBMIT_TIME, FINISH_TIME,
+		TOTAL_MONEY,
+		PRESCRIPTION, USER_DLT
+	</sql>
+
+	<insert id="insert" parameterType="com.ysk.source.entity.Order">
+		insert into order_info
+		(ORDER_ID,USER_ID, ORDER_STATE, SUBMIT_TIME,TOTAL_MONEY, PRESCRIPTION)
+		values
+		(#{orderId}, #{userId}, #{orderState}, #{submitTime},
+		#{totalMoney},#{prescription})
+	</insert>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from order_info
+		where ORDER_ID = #{orderId}
+	</select>
+
+	<select id="selectOrderByPage" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from order_info
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(userId)">and USER_ID = #{userId}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(orderState)">and ORDER_STATE = #{orderState}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(submitTime)">and SUBMIT_TIME = #{submitTime}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(finishTime)">and FINISH_TIME = #{finishTime}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(totalMoney)">and TOTAL_MONEY = #{totalMoney}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(prescription)">and PRESCRIPTION = #{prescription}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(userDlt)">and USER_DLT = #{userDlt}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from order_info
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="com.ysk.source.entity.Order">
+		update order_info
+		<trim prefix="set" suffixOverrides=",">
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(userId)">USER_ID = #{userId},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(orderState)"> ORDER_STATE = #{orderState},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(submitTime)">SUBMIT_TIME = #{submitTime},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(finishTime)">FINISH_TIME = #{finishTime},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(totalMoney)">TOTAL_MONEY = #{totalMoney},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(prescription)">PRESCRIPTION = #{prescription},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(userDlt)">USER_DLT = #{userDlt},
+			</if>
+		</trim>
+		where ORDER_ID = #{orderId}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from order_info
+		where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+	</delete>
+
+	<update id="userDeleteOrderById" parameterType="java.lang.String">
+		update order_info
+		set
+		USER_DLT = 1
+		where ORDER_ID = #{orderId}
+	</update>
+
+
+</mapper>

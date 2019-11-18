@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ysk.source.dao.DrugInformationMapper">
+	<resultMap id="BaseResultMap" type="com.ysk.source.entity.DrugInformation">
+		<id column="DRUG_ID" jdbcType="VARCHAR" property="drugId" />
+		<result column="PHARMACY_ID" jdbcType="VARCHAR" property="pharmacyId" />
+		<result column="DRUG_NAME" jdbcType="VARCHAR" property="drugName" />
+		<result column="BANNER_IMG" jdbcType="VARCHAR" property="bannerImg" />
+		<result column="ORIGINAL_PRICE" jdbcType="INTEGER" property="originalPrice" />
+		<result column="BUYING_PRICE" jdbcType="INTEGER" property="buyingPrice" />
+		<result column="PRODUCT_CODE" jdbcType="VARCHAR" property="productCode" />
+		<result column="APPROVAL_NUMBER" jdbcType="VARCHAR" property="approvalNumber" />
+		<result column="PRODUCT_STANDARD" jdbcType="VARCHAR" property="productStandard" />
+		<result column="MANUFACTURER" jdbcType="VARCHAR" property="manufacturer" />
+		<result column="INVENTORY" jdbcType="INTEGER" property="inventory" />
+		<result column="ADD_TIME" jdbcType="VARCHAR" property="addTime" />
+		<result column="OPERATOR" jdbcType="VARCHAR" property="operator" />
+		<result column="BACKUP_DATA" jdbcType="VARCHAR" property="backupData" />
+		<result column="BACKUP_TEXT" jdbcType="VARCHAR" property="backupText" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		DRUG_ID, PHARMACY_ID, DRUG_NAME, BANNER_IMG,
+		ORIGINAL_PRICE, BUYING_PRICE, PRODUCT_CODE, APPROVAL_NUMBER,
+		PRODUCT_STANDARD, MANUFACTURER, INVENTORY, ADD_TIME, OPERATOR
+	</sql>
+
+	<insert id="insert" parameterType="com.ysk.source.entity.DrugInformation">
+		insert into drug_information
+		(DRUG_ID, PHARMACY_ID, DRUG_NAME,
+		BANNER_IMG, BUYING_PRICE, PRODUCT_CODE,
+		APPROVAL_NUMBER,
+		PRODUCT_STANDARD, MANUFACTURER, INVENTORY, ADD_TIME,
+		OPERATOR
+		<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(buyingPrice)">,ORIGINAL_PRICE
+		</if>
+		)
+		values (#{drugId}, #{pharmacyId}, #{drugName}, #{bannerImg},
+		#{originalPrice}, #{productCode}, #{approvalNumber},
+		#{productStandard}, #{manufacturer}, #{inventory}, #{addTime},
+		#{operator}
+		<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(buyingPrice)">,#{buyingPrice}
+		</if>
+		)
+	</insert>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from drug_information
+		where DRUG_ID = #{drugId}
+	</select>
+
+	<select id="selectByPharmacyId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from drug_information
+		where PHARMACY_ID = #{pharmacyId}
+	</select>
+
+	<select id="selectByPage" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from drug_information
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(drugName)">and DRUG_NAME = #{drugName}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(bannerImg)">and BANNER_IMG = #{bannerImg}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(originalPrice)">and ORIGINAL_PRICE = #{originalPrice}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(buyingPrice)">and BUYING_PRICE = #{buyingPrice}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(productCode)">and PRODUCT_CODE = #{productCode}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(approvalNumber)">and APPROVAL_NUMBER = #{approvalNumber}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(productStandard)">and PRODUCT_STANDARD = #{productStandard}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(manufacturer)">and MANUFACTURER = #{manufacturer}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(inventory)">and INVENTORY = #{inventory}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(addTime)">and ADD_TIME = #{addTime}
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(operator)">and OPERATOR = #{operator}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectBysearch" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from drug_information
+		where DRUG_NAME LIKE
+		CONCAT(CONCAT('%',#{drugName}), '%')
+		<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(pharmacyId)">and PHARMACY_ID = #{pharmacyId}
+		</if>
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from drug_information
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="com.ysk.source.entity.DrugInformation">
+		update drug_information
+		<trim prefix="set" suffixOverrides=",">
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(pharmacyId)"> PHARMACY_ID = #{pharmacyId},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(drugName)"> DRUG_NAME = #{drugName},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(bannerImg)"> BANNER_IMG = #{bannerImg},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(originalPrice)"> ORIGINAL_PRICE = #{originalPrice},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(buyingPrice)">BUYING_PRICE = #{buyingPrice},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(productCode)">PRODUCT_CODE = #{productCode},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(approvalNumber)">APPROVAL_NUMBER = #{approvalNumber},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(productStandard)">PRODUCT_STANDARD = #{productStandard},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(manufacturer)">MANUFACTURER = #{manufacturer},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(inventory)">INVENTORY = #{inventory},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(addTime)"> ADD_TIME = #{addTime},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(operator)">OPERATOR = #{operator},
+			</if>
+		</trim>
+		where DRUG_ID = #{drugId}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete a,b from
+		drug_information a,drug_details b
+		where
+		a.DRUG_ID=b.DRUG_ID a.DRUG_ID =
+		#{drugId}
+	</delete>
+
+</mapper>

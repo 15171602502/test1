@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ysk.source.dao.DrugDetailsMapper">
+	<resultMap id="BaseResultMap" type="com.ysk.source.entity.DrugDetails">
+		<id column="DRUG_ID" jdbcType="VARCHAR" property="drugId" />
+		<result column="COMMON_NAME" jdbcType="VARCHAR" property="commonName" />
+		<result column="DRUG_NAME" jdbcType="VARCHAR" property="drugName" />
+		<result column="INGREDIENT" jdbcType="VARCHAR" property="ingredient" />
+		<result column="CHARACTERS" jdbcType="VARCHAR" property="characters" />
+		<result column="MAJOR_FUNCTION" jdbcType="VARCHAR" property="majorFunction" />
+		<result column="PRODUCT_STANDARD" jdbcType="VARCHAR" property="productStandard" />
+		<result column="INSTRUCTION" jdbcType="VARCHAR" property="instruction" />
+		<result column="UNTOWARD_EFFECT" jdbcType="VARCHAR" property="untowardEffect" />
+		<result column="TABOO" jdbcType="VARCHAR" property="taboo" />
+		<result column="ANNOUNCEMENTS" jdbcType="VARCHAR" property="announcements" />
+		<result column="DRUG_INTERACTION" jdbcType="VARCHAR" property="drugInteraction" />
+		<result column="STORE_UP" jdbcType="VARCHAR" property="storeUp" />
+		<result column="PACKAGING" jdbcType="VARCHAR" property="packaging" />
+		<result column="VALID_UNTIL" jdbcType="VARCHAR" property="validUntil" />
+		<result column="APPROVAL_NUMBER" jdbcType="VARCHAR" property="approvalNumber" />
+		<result column="MANUFACTURER" jdbcType="VARCHAR" property="manufacturer" />
+		<result column="ENGLISH_NAME" jdbcType="VARCHAR" property="englishName" />
+		<result column="GRAPHIC_SHOWS" jdbcType="VARCHAR" property="graphicShows" />
+		<result column="BACKUP_DATA" jdbcType="VARCHAR" property="backupData" />
+		<result column="BACKUP_TEXT" jdbcType="VARCHAR" property="backupText" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		DRUG_ID, COMMON_NAME, DRUG_NAME, INGREDIENT, CHARACTERS,
+		MAJOR_FUNCTION,PRODUCT_STANDARD,INSTRUCTION, UNTOWARD_EFFECT,
+		TABOO,ANNOUNCEMENTS,DRUG_INTERACTION,
+		STORE_UP,PACKAGING,VALID_UNTIL,APPROVAL_NUMBER, MANUFACTURER,
+		ENGLISH_NAME, GRAPHIC_SHOWS
+	</sql>
+
+	<insert id="insert" parameterType="com.ysk.source.entity.DrugDetails">
+		insert into drug_details
+		(DRUG_ID, COMMON_NAME, DRUG_NAME,INGREDIENT,CHARACTERS,
+		MAJOR_FUNCTION,PRODUCT_STANDARD, INSTRUCTION,UNTOWARD_EFFECT,TABOO,
+		ANNOUNCEMENTS, DRUG_INTERACTION,STORE_UP,PACKAGING, VALID_UNTIL,
+		APPROVAL_NUMBER, MANUFACTURER, ENGLISH_NAME,GRAPHIC_SHOWS
+		)
+		values
+		(#{drugId}, #{commonName},#{drugName},#{ingredient},#{characters},
+		#{majorFunction}, #{productStandard}, #{instruction},
+		#{untowardEffect},#{taboo},#{announcements},#{drugInteraction},#{storeUp},#{packaging},
+		#{validUntil},#{approvalNumber}, #{manufacturer},
+		#{englishName},#{graphicShows}
+		)
+	</insert>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from drug_details where DRUG_ID = #{drugId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from drug_details
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="com.ysk.source.entity.DrugDetails">
+		update
+		drug_details
+		<trim prefix="set" suffixOverrides=",">
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(commonName)"> COMMON_NAME = #{commonName},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(drugName)"> DRUG_NAME = #{drugName},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(ingredient)"> INGREDIENT = #{ingredient},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(characters)">CHARACTERS = #{characters},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(majorFunction)"> MAJOR_FUNCTION = #{majorFunction},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(productStandard)"> PRODUCT_STANDARD = #{productStandard},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(instruction)">INSTRUCTION =#{instruction},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(untowardEffect)">UNTOWARD_EFFECT = #{untowardEffect},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(taboo)">TABOO = #{taboo},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(announcements)">ANNOUNCEMENTS = #{announcements},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(drugInteraction)"> DRUG_INTERACTION = #{drugInteraction},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(storeUp)">STORE_UP =#{storeUp},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(packaging)"> PACKAGING = #{packaging},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(validUntil)">VALID_UNTIL = #{validUntil},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(approvalNumber)">APPROVAL_NUMBER = #{approvalNumber},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(manufacturer)"> MANUFACTURER = #{manufacturer},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(englishName)">ENGLISH_NAME =#{englishName},
+			</if>
+			<if test="@com.ysk.kxt.util.mybatis.Ognl@isNotEmpty(graphicShows)">GRAPHIC_SHOWS = #{graphicShows},
+			</if>
+		</trim>
+		where DRUG_ID = #{drugId}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		drug_details
+		where DRUG_ID = #{drugId,jdbcType=VARCHAR}
+	</delete>
+
+</mapper>
